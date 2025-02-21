@@ -23,7 +23,7 @@ int main() {
 }
 double func(double x)
 {
-    return pow(x,4)-x-10;  //change this one for finding roots of different equation
+    return pow(x,3)-9*x+1;  //change this one for finding roots of different equation
 }
 double bisection(double a,double b,double tol)
 {
@@ -32,18 +32,15 @@ double bisection(double a,double b,double tol)
         return -1;
     }
     double c;
-    while((b-a)>=tol)
+    c = (a + b) / 2;
+    while (fabs(func(c)) >= tol) 
     {
-        c=(a+b)/2;
-        if(fabs(func(c)) < 1e-9)
-        {
-            return c;
-        }
+        c = (a + b) / 2;
         if (func(a) * func(c) < 0) {
             b = c;
         } else {
             a = c;
         }
     }
-    return (a+b)/2;
+    return c;
 }
