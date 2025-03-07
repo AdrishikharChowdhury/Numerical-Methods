@@ -11,6 +11,11 @@ int main() {
     scanf("%lf",&a);
     printf("Enter number of subintervals: ");
     scanf("%d",&n);
+    if(n%2!=0)
+    {
+        printf("Number of subintervals should be even\n");
+        return 0;
+    }
     h=(b-a)/n;
     double ans=simpsonOnethird(a,b,h,n);
     printf("The ans of the given integral is: %.6lf\n",ans);   
