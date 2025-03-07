@@ -20,7 +20,8 @@ int main()
 }
 double func(double x)
 {
-    return 1/(sqrt(1+pow(x,3)));
+    double X=pow(x,2);
+    return sin(X);
 }
 double trapezoidal(double a,double b,double h,int n)
 {
