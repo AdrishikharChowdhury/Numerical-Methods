@@ -1,3 +1,5 @@
 # Ignore all output folders
 output/
 */output/
+
+.vscode/
