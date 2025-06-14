@@ -4,17 +4,17 @@ Newton’s Forward Interpolation is a numerical technique used to estimate the v
 
 ---
 
-## 🚀 **Formula**  
-The Newton's Forward Difference Interpolation formula is:  
+## 🚀 **Formula**
+The Newton's Forward Difference Interpolation formula is:
 
-\[
+$$
 f(x) = f(x_0) + u \Delta f(x_0) + \frac{u(u-1)}{2!} \Delta^2 f(x_0) + \frac{u(u-1)(u-2)}{3!} \Delta^3 f(x_0) + \dots
-\]
+$$
 
-where:  
-- \( u = \frac{x - x_0}{h} \)  
-- \( h \) is the step size (difference between consecutive \( x \)-values)  
-- \( \Delta f(x) \) represents the **forward differences**  
+where:
+- $u = \frac{x - x_0}{h}$
+- $h$ is the step size (difference between consecutive $x$-values)
+- $\Delta f(x)$ represents the **forward differences**
 
 ---
 

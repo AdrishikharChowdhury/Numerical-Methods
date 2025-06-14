@@ -1,85 +1,77 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct table{
-    double x;
-    double fx;
-    struct table *next;
-}tb;
-
-tb *createTable(int);
-double newtonForwardInterpolationMethod(tb *,double *,double ,int);
-int main() 
-{
-    double *del,X;
+double **inputTable(int);
+void printTable(double **,int);
+double newtonForwardInterpolation(double **,double,int);
+int main() {
     int n;
-    tb *f;
-    printf("Enter the no. of data pairs you want to enter: ");
+    double x;
+    printf("Enter the no. of data pairs: ");
     scanf("%d",&n);
-    f=createTable(n);
-    del=(double *)malloc(n*sizeof(double));
-    printf("Enter the point which you want to find the value: ");
-    scanf("%lf",&X);
-    double u=(X-f->x)/(f->next->x-f->x);
-    double ans=newtonForwardInterpolationMethod(f,del,u,n);
-    printf("The ans is: %lf",ans);
+    double **datatable = inputTable(n);
+    printf("Enter the interpolating point: ");
+    scanf("%lf",&x);
+    double u=(x-datatable[0][0])/(datatable[0][1]-datatable[0][0]);
+    double ans=newtonForwardInterpolation(datatable,u,n);
+    printf("The value at the interpolating point %lf is %lf",x,ans);
     return 0;
 }
-
-double newtonForwardInterpolationMethod(tb *head,double *del,double u,int n)
+double **inputTable(int n)
 {
     int i,j;
-    tb *head1=head;
-    double *fd;
-    fd=(double *)malloc(n*sizeof(double));
-    for(i=0;i<n && head1 != NULL;i++)
+    double **datatable = malloc(2 * sizeof(double *));
+    for (i = 0; i < 2; i++) 
     {
-        del[i]=head1->fx;
-        head1=head1->next;
+        datatable[i] = malloc(n * sizeof(double));
     }
-    fd[0]=del[0];
-    head1=head;
-    for(i=1;i<n;i++)
+    printf("Enter the data pairs:\n");
+    for(i=0;i<2;i++)
+    {
+        for (j=0;j<n;j++)
+        {
+            printf("Enter the datatable[%d][%d]: ",i,j);
+            scanf("%lf",&datatable[i][j]);
+        }
+    }
+    return datatable;
+}
+void printTable(double **datatable,int n)
+{
+    int i,j;
+    for(i=0;i<n;i++)
     {
         for(j=0;j<n-i;j++)
         {
-            del[j]=del[j+1]-del[j];
+            printf("%lf\t",datatable[j][i]);
         }
-        fd[i]=del[0];
+        printf("\n");
     }
-
-    double ans=fd[0],term=1;
+}
+double newtonForwardInterpolation(double **datatable,double u,int n)
+{
+    int i,j;
+    double **fdtable = malloc(n * sizeof(double *));
+    for (i = 0; i < n; i++) 
+    {
+        fdtable[i] = malloc(n * sizeof(double));
+    }
+    for(i=0;i<n;i++)
+    {
+        fdtable[0][i]=datatable[1][i];
+    }
+    for (j = 1; j < n; j++)
+    {
+        for (i = 0; i < n - j; i++)
+        {
+            fdtable[j][i] = fdtable[j - 1][i + 1] - fdtable[j - 1][i];
+        }
+    }
+    double ans=fdtable[0][0],term=1;
     for(i=1;i<n;i++)
     {
         term*=(u-(i-1))/i;
-        ans+=term*fd[i];
+        ans+=term*fdtable[i][0];
     }
+    printTable(fdtable,n);
     return ans;
-}
-
-tb *createTable(int n)
-{
-    tb *head,*head1,*node;
-    int i=0;
-    head=(tb *)malloc(sizeof(tb));
-    printf("Enter the x%d: ",i);
-    scanf("%lf",&head->x);
-    printf("Enter the f(x%d): ",i);
-    scanf("%lf",&head->fx);
-    head->next=NULL;
-    head1=head;
-    n-=1;
-    while(n>0)
-    {
-        i+=1;
-        node=(tb *)malloc(sizeof(tb));
-        node->next=NULL;
-        printf("Enter the x%d: ",i);
-        scanf("%lf",&node->x);
-        printf("Enter the f(x%d): ",i);
-        scanf("%lf",&node->fx);
-        head1->next=node;
-        head1=head1->next;
-        n-=1;
-    }
-    return head;
 }
